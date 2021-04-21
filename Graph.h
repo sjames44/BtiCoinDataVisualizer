@@ -25,8 +25,8 @@ class Graph {
 
             Edge(int rating) rating(rating) {}
         };
-        std::vector<Vertex> vertices;
-        std::vector<std::vector<Edge>> matrix; //First dimension is parent vertex, second is child
+        std::vector<Vertex*> vertices;
+        std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
 
 
     public:
@@ -40,5 +40,5 @@ class Graph {
 
         Edge getEdge(Vertex a, Vertex b);        
 
-        double calculateAverage(Vertex a);
+        double calculateAverage(Vertex* a);
 };
