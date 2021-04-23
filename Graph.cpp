@@ -20,7 +20,7 @@ double Graph::calculateAverage(Vertex* a) {
     int sum = 0;
     int total = 0;
 
-    std::vector<Edge> incidents = incidentEdges(*a);
+    std::vector<Edge> incidents = incidentEdges(a);
 
     for (Edge edge : incidents) {
         total++;
@@ -30,24 +30,24 @@ double Graph::calculateAverage(Vertex* a) {
     return (sum / total);
 }
 
-std::vector<Graph::Edge> Graph::incidentEdges(Vertex a) {
+std::vector<Graph::Edge> Graph::incidentEdges(Vertex* a) {
     std::vector<Edge> result;
-    for(int i=0; i<vertices.size(); i++){
-        Edge* temp = matrix[vertices[i]->id][a->id];
-        if(temp->weight != 0)
+    for(size_t i=0; i<vertices.size(); i++){
+        Edge temp = *matrix[vertices[i]->id][a->id];
+        if(temp.rating != 0)
             result.push_back(temp);
     }
     return result;
 }
 
 
-Edge* getEdge(Vertex a, Vertex b){
-    Edge* temp = matrix[a->id][b->id];
-    return temp;
+Graph::Edge* Graph::getEdge(Vertex* a, Vertex* b){
+    //Edge* temp = matrix[a->id][b->id];
+    return matrix[a->id][b->id];
 }
 
-bool areAdjacent(Vertex a, Vertex b){
-    if(matrix[a->id][b->id]->weight != 0)
+bool Graph::areAdjacent(Vertex* a, Vertex* b){
+    if(matrix[a->id][b->id]->rating != 0)
         return true;
     else return false;
 }
