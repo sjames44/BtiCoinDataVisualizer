@@ -32,5 +32,22 @@ double Graph::calculateAverage(Vertex* a) {
 
 std::vector<Graph::Edge> Graph::incidentEdges(Vertex a) {
     std::vector<Edge> result;
+    for(int i=0; i<vertices.size(); i++){
+        Edge* temp = matrix[vertices[i]->id][a->id];
+        if(temp->weight != 0)
+            result.push_back(temp);
+    }
     return result;
+}
+
+
+Edge* getEdge(Vertex a, Vertex b){
+    Edge* temp = matrix[a->id][b->id];
+    return temp;
+}
+
+bool areAdjacent(Vertex a, Vertex b){
+    if(matrix[a->id][b->id]->weight != 0)
+        return true;
+    else return false;
 }
