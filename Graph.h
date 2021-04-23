@@ -23,7 +23,7 @@ class Graph {
 
             int rating;
 
-            Edge(int rating) rating(rating) {}
+            Edge(int rating) : rating(rating) {}
         };
         std::vector<Vertex*> vertices;
         std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child

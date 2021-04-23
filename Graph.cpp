@@ -16,16 +16,21 @@ void Graph::insertEdge(Vertex first, Vertex second, int weight) {
     matrix[firstId][secondId] = newEdge;
 }
 
-double Graph::calculateAverage(Vertex a) {
+double Graph::calculateAverage(Vertex* a) {
     int sum = 0;
     int total = 0;
 
-    std::vector<Edge*> incidents = incidentEdges(a);
+    std::vector<Edge> incidents = incidentEdges(*a);
 
-    for (Edge* edge : incidents) {
+    for (Edge edge : incidents) {
         total++;
-        sum += edge->weight;
+        sum += edge.rating;
     }
 
     return (sum / total);
+}
+
+std::vector<Graph::Edge> Graph::incidentEdges(Vertex a) {
+    std::vector<Edge> result;
+    return result;
 }
