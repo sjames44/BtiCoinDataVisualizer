@@ -16,3 +16,6 @@ but after some discussion with our advisor we are leaning more towards a directe
 vertex and edge structures. Also began working on our File Reader object, which is what we are going to use to read the data 
 from the dataset into our structure. We will most likely implement the basics of our structure before completing the
 file reader.
+
+**Week of 04/25/2021:**
+Finished work on Graph implementation and File reader. Decided to switch from implementing the PageRank algorithm to implementing Dijkstra's Algorithm due to time/complexity issues. We also began splitting up the work for the traversal and the two chosen algorithms. We have begun taking the advice that our TA gave us during the mid-point check-in and implementing it. 
