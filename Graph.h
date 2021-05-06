@@ -49,15 +49,15 @@ class Graph {
         * @param v - The vertex we want to find the incident edges of 
         * @return a list of edges incident to Vertex v
         */ 
-        std::vector<Edge> incidentEdges(Vertex v);
+        std::vector<Edge> incidentEdges(Vertex* v);
 
         /**
-        * Method that will determine if two edges are connected or not
+        * Method that will determine if two vertices are connected or not
         * @param a - The first vertex
         * @param b - The second vertex
-        * @return true if the two edges are adjacent, false otherwise
+        * @return true if the two vertices are adjacent, false otherwise
         */
-        bool areAdjacent(Vertex a, Vertex b);
+        bool areAdjacent(Vertex* a, Vertex* b);
 
         /**
         * A simple method that will return the edge that connects two vertices
@@ -65,7 +65,7 @@ class Graph {
         * @param b - The second vertex
         * @return a pointer to the edge that connects the two vertices
         */
-        Edge* getEdge(Vertex a, Vertex b);        
+        Edge* getEdge(Vertex* a, Vertex* b);        
 
         /**
         * Method that will calculate the average rating of a specific user
