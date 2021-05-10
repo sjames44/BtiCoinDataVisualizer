@@ -47,11 +47,11 @@ std::vector<Graph::Edge> Graph::incidentEdges(Vertex* a) {
 
 Graph::Edge* Graph::getEdge(Vertex* a, Vertex* b){
     //Edge* temp = matrix[a->id][b->id];
-    return matrix[a->id][b->id];
+    return matrix[a->id -1][b->id -1];
 }
 
 bool Graph::areAdjacent(Vertex* a, Vertex* b){
-    if(matrix[a->id][b->id]->rating != 0)
+    if(matrix[a->id -1][b->id -1]->rating != 0)
         return true;
     else return false;
 }
@@ -60,7 +60,7 @@ void Graph::BFS(int startid){
     std::vector<bool> visited(vertices.size(),0);
     std::vector<int> ids;
     ids.push_back(startid);
-    visited[startid] = 1;
+    visited[startid -1] = 1;
     int cur;
     while(!ids.empty()) {
         cur = ids[0];
