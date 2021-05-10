@@ -25,11 +25,16 @@ class Graph {
 
             Edge(int rating) : rating(rating) {}
         };
+        int getIndex(Vertex& a);
+
         std::vector<Vertex*> vertices;
         std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
 
 
     public:
+        Graph();
+        
+        Graph(int size);
         /**
         * Method that inserts a new vertex (User) into the graph
         * @param id - The id of the new user
@@ -73,4 +78,8 @@ class Graph {
         * @return a double representing the average rating for the user
         */
         double calculateAverage(Vertex* a);
+
+        void BFS(int startid);
+
+        void dijkstrasAlgo(Vertex* start);
 };
