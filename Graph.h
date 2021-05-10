@@ -30,6 +30,8 @@ class Graph {
 
 
     public:
+        Graph();
+        
         /**
         * Method that inserts a new vertex (User) into the graph
         * @param id - The id of the new user
@@ -73,4 +75,6 @@ class Graph {
         * @return a double representing the average rating for the user
         */
         double calculateAverage(Vertex* a);
+
+        void BFS(int startid);
 };

@@ -1,10 +1,14 @@
 #include "Graph.h"
 
+Graph::Graph(){
+
+}
 
 void Graph::insertVertex(int id) {
     Vertex* newVertex = new Vertex(id);
     newVertex->average = 0; //Default value
     vertices.push_back(newVertex);
+    
 }
 
 void Graph::insertEdge(Vertex first, Vertex second, int weight) {
@@ -33,8 +37,8 @@ double Graph::calculateAverage(Vertex* a) {
 std::vector<Graph::Edge> Graph::incidentEdges(Vertex* a) {
     std::vector<Edge> result;
     for(size_t i=0; i<vertices.size(); i++){
-        Edge temp = *matrix[vertices[i]->id][a->id];
-        if(temp.rating != 0)
+        Edge temp = *matrix[a->id -1][vertices[i]->id -1];
+        if(temp.rating != 11)
             result.push_back(temp);
     }
     return result;
@@ -50,4 +54,24 @@ bool Graph::areAdjacent(Vertex* a, Vertex* b){
     if(matrix[a->id][b->id]->rating != 0)
         return true;
     else return false;
+}
+
+void Graph::BFS(int startid){
+    std::vector<bool> visited(vertices.size(),0);
+    std::vector<int> ids;
+    ids.push_back(startid);
+    visited[startid] = 1;
+    int cur;
+    while(!ids.empty()) {
+        cur = ids[0];
+        std::cout << cur << std::endl;
+        ids.erase(ids.begin());
+
+        for(size_t i=0; i<vertices.size(); i++){
+            if(matrix[cur][i]->rating != 11 && !visited[i]){
+                ids.push_back(i);
+                visited[i] = 1;
+            }
+        }
+    }
 }
