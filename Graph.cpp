@@ -67,19 +67,19 @@ bool Graph::areAdjacent(Vertex* a, Vertex* b){
 
 void Graph::BFS(int startid){
     std::vector<bool> visited(vertices.size(),0);
-    std::vector<int> ids;
-    ids.push_back(startid);
+    std::vector<Vertex*> ids;
+    ids.push_back(getVertex(startid));
     visited[startid -1] = 1;
-    int cur;
     while(!ids.empty()) {
-        cur = ids[0];
-        std::cout << cur << std::endl;
+        Vertex* curr = ids[0];
+        std::cout << curr->id << std::endl;
         ids.erase(ids.begin());
-
         for(size_t i=0; i<vertices.size(); i++){
-            if(matrix[cur][i]->rating != 11 && !visited[i]){
-                ids.push_back(i);
-                visited[i] = 1;
+            if(matrix[curr->id - 1][vertices[i]->id - 1] != NULL){
+                if(matrix[curr->id - 1][vertices[i]->id - 1]->rating != 11 && !visited[i]){
+                    ids.push_back(vertices[i]);
+                    visited[i] = 1;
+                }
             }
         }
     }
@@ -113,4 +113,14 @@ int Graph::getIndex(Vertex& v) {
     }
     //If vertex wasn't found in vector
     return -1;
+}
+
+Graph::Vertex* Graph::getVertex(int idvert) {
+    for (int index = 0; index < vertices.size(); index++) {
+        if (vertices[index]->id == idvert) {
+            return vertices[index];
+        }
+    }
+    //If vertex wasn't found in vector
+    return NULL;
 }
