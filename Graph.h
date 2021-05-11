@@ -20,15 +20,15 @@ class Graph {
         };
 
         struct Edge {
-
             int rating;
-
             Edge(int rating) : rating(rating) {}
         };
-        int getIndex(Vertex& a);
 
         std::vector<Vertex*> vertices;
         std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
+        int getIndex(Vertex& a);
+
+        void printSolution(std::vector<int> dist);
 
 
     public:
@@ -81,7 +81,7 @@ class Graph {
 
         void BFS(int startid);
 
-        void dijkstrasAlgo(Vertex* start);
+        std::vector<int> dijkstrasAlgo(int s);
 
         Vertex* getVertex(int idvert);
 };

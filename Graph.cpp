@@ -17,7 +17,8 @@ Graph::Graph(int size) {
 void Graph::insertVertex(int id) {
     Vertex* newVertex = new Vertex(id);
     newVertex->average = 0; //Default value
-    vertices.push_back(newVertex);
+    //vertices.push_back(newVertex);
+    vertices[id -1] = newVertex;
     
 }
 
@@ -86,9 +87,7 @@ void Graph::BFS(int startid){
     }
 }
 
-void Graph::dijkstrasAlgo(Vertex* start) {
-    int s = getIndex(*start); //Get index of start
-
+std::vector<int> Graph::dijkstrasAlgo(int s) {
     std::vector<int> distances;
     std::vector<bool> visited;
     distances.resize(vertices.size(), INT_MAX); //Vector that stores distances for each vertex
@@ -102,17 +101,17 @@ void Graph::dijkstrasAlgo(Vertex* start) {
     q.push(star);
     distances[s] = 0;
 
+
     while (!q.empty()) {
         //Get the vertex with the current minimum distance
         int u = q.top().second; //The second value is the index of the vertex
         q.pop(); //Remove the vertex from the queue
 
         visited[u] = true; //Mark vertex as visited
-
-        //std::vector<Graph::Edge*> adjacentVertices = matrix[u]; //Get edges incident to u
+        
         //Iterate through all the edges vertices adjacent to u and find the best one
         for (size_t v = 0; v < matrix[u].size(); v++) {
-            if (!visited[v] && matrix[u][v]->rating != 11 && distances[u] != INT_MAX) { //Check if its a vertex we want to check
+            if (!visited[v] && matrix[u][v] != NULL && matrix[u][v]->rating != 11 && distances[u] != INT_MAX) { //Check if its a vertex we want to check
                 if (distances[u] + matrix[u][v]->rating < distances[v]) { //If we've found a better distance, update
                     distances[v] = distances[u] + matrix[u][v]->rating;
                     q.push(std::make_pair(distances[v], v));
@@ -120,6 +119,9 @@ void Graph::dijkstrasAlgo(Vertex* start) {
             }
         }
     }
+
+    printSolution(distances);
+    return distances;
 }
 
 int Graph::getIndex(Vertex& v) {
@@ -140,4 +142,13 @@ Graph::Vertex* Graph::getVertex(int idvert) {
     }
     //If vertex wasn't found in vector
     return NULL;
+}
+
+void Graph::printSolution(std::vector<int> dist)
+{
+    std::cout << dist.size() << std::endl;
+    for (size_t i = 0; i < dist.size(); i++) {
+        std::cout << dist[i] << " ";
+    }
+    std::cout << std::endl;
 }
