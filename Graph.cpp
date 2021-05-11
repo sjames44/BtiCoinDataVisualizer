@@ -7,6 +7,7 @@ Graph::Graph(){
 }
 
 Graph::Graph(int size) {
+    vertices.resize(size);
     for (int row = 0; row < size; row++) {
         std::vector<Edge*> newRow(size, NULL);
         matrix.push_back(newRow);
@@ -67,19 +68,19 @@ bool Graph::areAdjacent(Vertex* a, Vertex* b){
 
 void Graph::BFS(int startid){
     std::vector<bool> visited(vertices.size(),0);
-    std::vector<int> ids;
-    ids.push_back(startid);
+    std::vector<Vertex*> ids;
+    ids.push_back(getVertex(startid));
     visited[startid -1] = 1;
-    int cur;
     while(!ids.empty()) {
-        cur = ids[0];
-        std::cout << cur << std::endl;
+        Vertex* curr = ids[0];
+        std::cout << curr->id << std::endl;
         ids.erase(ids.begin());
-
         for(size_t i=0; i<vertices.size(); i++){
-            if(matrix[cur][i]->rating != 11 && !visited[i]){
-                ids.push_back(i);
-                visited[i] = 1;
+            if(matrix[curr->id - 1][vertices[i]->id - 1] != NULL){
+                if(matrix[curr->id - 1][vertices[i]->id - 1]->rating != 11 && !visited[i]){
+                    ids.push_back(vertices[i]);
+                    visited[i] = 1;
+                }
             }
         }
     }
@@ -89,28 +90,54 @@ void Graph::dijkstrasAlgo(Vertex* start) {
     int s = getIndex(*start); //Get index of start
 
     std::vector<int> distances;
-    std::vector<int> visited;
+    std::vector<bool> visited;
     distances.resize(vertices.size(), INT_MAX); //Vector that stores distances for each vertex
+    visited.resize(vertices.size(), false);
     
-    std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>> > q; //Priority queue that is min-heap <weight, predecessor>
+    std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>> > q; //Priority queue that is min-heap <weight, index>
+    //std::priority_queue<int, std::vector<int>
 
     //Add start to q and add dist
     std::pair<int, int> star = std::make_pair(0, s);
+    q.push(star);
     distances[s] = 0;
 
     while (!q.empty()) {
         //Get the vertex with the current minimum distance
-        int u = q.top().second; //The second value is the vertex
-        
+        int u = q.top().second; //The second value is the index of the vertex
+        q.pop(); //Remove the vertex from the queue
+
+        visited[u] = true; //Mark vertex as visited
+
+        //std::vector<Graph::Edge*> adjacentVertices = matrix[u]; //Get edges incident to u
+        //Iterate through all the edges vertices adjacent to u and find the best one
+        for (size_t v = 0; v < matrix[u].size(); v++) {
+            if (!visited[v] && matrix[u][v]->rating != 11 && distances[u] != INT_MAX) { //Check if its a vertex we want to check
+                if (distances[u] + matrix[u][v]->rating < distances[v]) { //If we've found a better distance, update
+                    distances[v] = distances[u] + matrix[u][v]->rating;
+                    q.push(std::make_pair(distances[v], v));
+                }
+            }
+        }
     }
 }
 
 int Graph::getIndex(Vertex& v) {
-    for (int index = 0; index < vertices.size(); index++) {
+    for (size_t index = 0; index < vertices.size(); index++) {
         if (vertices[index]->id == v.id) {
             return index;
         }
     }
     //If vertex wasn't found in vector
     return -1;
+}
+
+Graph::Vertex* Graph::getVertex(int idvert) {
+    for (size_t index = 0; index < vertices.size(); index++) {
+        if (vertices[index]->id == idvert) {
+            return vertices[index];
+        }
+    }
+    //If vertex wasn't found in vector
+    return NULL;
 }

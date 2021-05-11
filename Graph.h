@@ -82,4 +82,6 @@ class Graph {
         void BFS(int startid);
 
         void dijkstrasAlgo(Vertex* start);
+
+        Vertex* getVertex(int idvert);
 };
