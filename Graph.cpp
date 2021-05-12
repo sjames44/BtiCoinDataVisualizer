@@ -11,7 +11,7 @@ Graph::Graph(){
 }
 
 Graph::Graph(int size) {
-    //vertices.resize(size);
+    idSize = size;
     for (int row = 0; row < size; row++) {
         std::vector<int> newRow(size, 11);
         matrix.push_back(newRow);
@@ -58,8 +58,6 @@ void Graph::insertVertex(int id) {
     Vertex* newVertex = new Vertex(id);
     newVertex->average = 0; //Default value
     vertices.push_back(newVertex);
-    //vertices[id -1] = newVertex;
-    
 }
 
 void Graph::insertEdge(Vertex first, Vertex second, int weight) {
@@ -95,7 +93,6 @@ std::vector<int> Graph::incidentEdges(Vertex* a) {
 
 
 int Graph::getEdge(Vertex* a, Vertex* b){
-    //Edge* temp = matrix[a->id][b->id];
     return matrix[a->id -1][b->id -1];
 }
 
@@ -127,13 +124,13 @@ std::vector<int> Graph::BFS(int startid){
 }
 
 std::vector<int> Graph::dijkstrasAlgo(int s) {
+    std::cout << vertices[s]->id << std::endl;
     std::vector<int> distances;
     std::vector<bool> visited;
-    distances.resize(vertices.size(), INT_MAX); //Vector that stores distances for each vertex
-    visited.resize(vertices.size(), false);
+    distances.resize(idSize, INT_MAX); //Vector that stores distances for each vertex
+    visited.resize(idSize, false);
     
     std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>> > q; //Priority queue that is min-heap <weight, index>
-    //std::priority_queue<int, std::vector<int>
 
     //Add start to q and add dist
     std::pair<int, int> star = std::make_pair(0, s);
@@ -200,31 +197,42 @@ cs225::PNG* Graph::drawGraph() {
     setUpAverages();
 
     for (size_t i = 0; i < coords.size(); i++) {
+        
         //Set color
-        double color = 0;
+        double color = 360;
         if (vertices[i]->average < 11) { //Good rating, color green
             color = 130;
         } else if (vertices[i]->average >= 11) { //Bad rating, color red
-            color = 30;
+            color = 0;
         }
         coords[i][3] = color; //Set the color of this vertex
 
         //Set radius
-        coords[i][2] = getChildren(i) / 2;
+        double radius = (getChildren(i) + 1) * 50;
+        //Bounds detection
+        if (coords[i][0] - radius < 0) {
+            coords[i][0] += (coords[i][0] - radius);
+        } else if (coords[i][0] + radius > width) {
+            coords[i][0] -= (coords[i][0] - radius);
+        }
+        if (coords[i][1] - radius < 0) {
+            coords[i][1] += (coords[i][1] - radius); //Makes it so they don't go over the edge
+        }
+
+        coords[i][2] = radius;
     }
 
-    //std::vector<bool> visited;
-    //Svisited.resize(vertices.size(), false);
+
+    //Go through and draw the 
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x ++) {
             for (size_t i = 0; i < coords.size(); i++) {
-                //std::cout << "RADIUS: " << coords[i][2] << std::endl;
+                
                 if ( (x - coords[i][0]) * (x - coords[i][0]) + (y - coords[i][1]) * (y - coords[i][1]) <= coords[i][2] * coords[i][2]) {
-                    //std::cout << "HERE" << std::endl;
                     //Check if we're within the radius of a vertex
                     cs225::HSLAPixel& pixel = graphImage->getPixel(x, y);
-                    //pixel.h = coords[i][3];
-                    pixel.h = 0;
+                    pixel.h = coords[i][3];
+                    //pixel.h = 0;
                     pixel.s = 1;
                     pixel.l = 0.5;
                 }
@@ -238,27 +246,36 @@ cs225::PNG* Graph::drawGraph() {
 
 void Graph::setupCoords(int width, int height) {
     srand(time(NULL)); //Set seed for random
-    coords.resize(vertices.size(), {(double) (rand() % width), (double) (rand() % height), 0, 0}); //x, y, radius, color
+    
+    for (size_t i = 0; i < vertices.size(); i++) {
+        double x = (double) (rand() % width);
+        double y = (double) (rand() % height);
+        coords.push_back({x, y, 0, 0});
+    }
 }
 
 void Graph::setUpAverages() {
-    for (size_t parent = 0; parent < matrix.size(); parent++) {
+    for (size_t vertex = 0; vertex < vertices.size(); vertex++) {
+        int index = vertices[vertex]->id - 1;
         double aver = 0;
         int total = 0;
-        for (size_t child = 0; child < matrix[parent].size(); child++) {
-            if (matrix[parent][child] != NULL && matrix[parent][child]->rating != 11) {
-                aver += matrix[parent][child]->rating;
+        for (size_t child = 0; child < matrix[index].size(); child++) {
+            if (matrix[index][child] > 0 && matrix[index][child] != 11 && matrix[index][child] < 22) {
+                aver += matrix[index][child];
                 total++;
             }
         }
-        vertices[parent]->average = aver / total;
+
+        vertices[vertex]->average = (aver/total);
     }
 }
 
 int Graph::getChildren(int index) {
     int result = 0;
-    for (size_t i = 0; i < matrix[index].size(); i++) {
-        if (matrix[index][i] != NULL && matrix[index][i]->rating != 11) {
+
+    int in = vertices[index]->id - 1;
+    for (size_t i = 0; i < matrix[in].size(); i++) {
+        if (matrix[in][i] != 11) {
             result++;
         }
     }

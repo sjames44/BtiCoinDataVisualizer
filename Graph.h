@@ -22,13 +22,9 @@ class Graph {
         };
 
         std::vector<Vertex*> vertices;
-<<<<<<< HEAD
-        std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
+        std::vector<std::vector<int>> matrix; //First dimension is parent vertex, second is child
         std::vector<int> numChildren;
         std::vector<std::vector<double>> coords; //x, y, radius, color
-=======
-        std::vector<std::vector<int>> matrix; //First dimension is parent vertex, second is child
->>>>>>> 03d422d5836877cb3b1fb01fe448647257ffdaf1
         int getIndex(Vertex& a);
 
         void printSolution(std::vector<int> dist);
@@ -38,6 +34,8 @@ class Graph {
         void setUpAverages();
 
         int getChildren(int index);
+
+        int idSize;
 
 
     public:
