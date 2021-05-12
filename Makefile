@@ -49,6 +49,9 @@ LDFLAGS = -std=c++14 -stdlib=libc++ -lc++abi -lm
 # Custom Clang Enforcement
 include make/customClangEnforcement.mk
 
+# Use the cs225 makefile template:
+include cs225/make/cs225.mk
+
 # Define Makefile Rules
 .PHONY: all test clean output_msg
 
