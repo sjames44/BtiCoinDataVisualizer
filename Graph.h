@@ -8,9 +8,11 @@
 
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 
 class Graph {
+    
     private:
         struct Vertex {
             //Integer representing the user's ID
@@ -20,16 +22,19 @@ class Graph {
         };
 
         struct Edge {
-
             int rating;
 
-            Edge(int rating) rating(rating) {}
+            Edge(int rating): rating(rating) {}
         };
         std::vector<Vertex*> vertices;
-        std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
-
+        std::vector<std::vector<Edge*> > matrix; //First dimension is parent vertex, second is child
 
     public:
+
+        Graph(std::ifstream &in); 
+
+        Graph(int size);
+
         /**
         * Method that inserts a new vertex (User) into the graph
         * @param id - The id of the new user
@@ -43,6 +48,14 @@ class Graph {
         * @param weight - The weight associated with the edge
         */
         void insertEdge(Vertex first, Vertex second, int weight);
+
+         /**
+        * Method that inserts a new edge that connects two vertices
+        * @param first - The first vertex to connect, this will be the parent
+        * @param second - The second vertex to connect, this will be the child
+        * @param weight - The weight associated with the edge
+        */
+        void insertEdge(int first, int second, int weight);
 
         /**
         * Method that will get a list of the incident edges of a specific vertex
@@ -72,5 +85,5 @@ class Graph {
         * @param a - The user we want to calculate the average for
         * @return a double representing the average rating for the user
         */
-        double calculateAverage(Vertex* a);
+        double calculateAverage(Vertex *a);
 };
