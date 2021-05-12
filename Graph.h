@@ -28,9 +28,17 @@ class Graph {
 
         std::vector<Vertex*> vertices;
         std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
+        std::vector<int> numChildren;
+        std::vector<std::vector<double>> coords; //x, y, radius, color
         int getIndex(Vertex& a);
 
         void printSolution(std::vector<int> dist);
+
+        void setupCoords(int width, int height);
+
+        void setUpAverages();
+
+        int getChildren(int index);
 
 
     public:
@@ -94,5 +102,7 @@ class Graph {
         std::vector<int> dijkstrasAlgo(int s);
 
         Vertex* getVertex(int idvert);
+
+        cs225::PNG* drawGraph();
 
 };

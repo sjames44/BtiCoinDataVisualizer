@@ -3,6 +3,8 @@
 #include "Graph.h"
 #include <vector>
 #include <queue>
+#include <stdlib.h> //Used for rand
+#include <time.h>
 
 Graph::Graph(){
 
@@ -13,6 +15,7 @@ Graph::Graph(int size) {
     for (int row = 0; row < size; row++) {
         std::vector<Edge*> newRow(size, NULL);
         matrix.push_back(newRow);
+        numChildren.push_back(0);
     }
 }
 
@@ -193,4 +196,77 @@ void Graph::printSolution(std::vector<int> dist)
         std::cout << dist[i] << " ";
     }
     std::cout << std::endl;
+}
+
+cs225::PNG* Graph::drawGraph() {
+    int width = 5000;
+    int height = 5000;
+    cs225::PNG* graphImage = new cs225::PNG(width, height);
+    setupCoords(width, height);
+    setUpAverages();
+
+    for (size_t i = 0; i < coords.size(); i++) {
+        //Set color
+        double color = 0;
+        if (vertices[i]->average < 11) { //Good rating, color green
+            color = 130;
+        } else if (vertices[i]->average >= 11) { //Bad rating, color red
+            color = 30;
+        }
+        coords[i][3] = color; //Set the color of this vertex
+
+        //Set radius
+        coords[i][2] = getChildren(i) / 2;
+    }
+
+    //std::vector<bool> visited;
+    //Svisited.resize(vertices.size(), false);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x ++) {
+            for (size_t i = 0; i < coords.size(); i++) {
+                //std::cout << "RADIUS: " << coords[i][2] << std::endl;
+                if ( (x - coords[i][0]) * (x - coords[i][0]) + (y - coords[i][1]) * (y - coords[i][1]) <= coords[i][2] * coords[i][2]) {
+                    //std::cout << "HERE" << std::endl;
+                    //Check if we're within the radius of a vertex
+                    cs225::HSLAPixel& pixel = graphImage->getPixel(x, y);
+                    //pixel.h = coords[i][3];
+                    pixel.h = 0;
+                    pixel.s = 1;
+                    pixel.l = 0.5;
+                }
+            }
+        }
+    }
+
+
+    return graphImage;
+}
+
+void Graph::setupCoords(int width, int height) {
+    srand(time(NULL)); //Set seed for random
+    coords.resize(vertices.size(), {(double) (rand() % width), (double) (rand() % height), 0, 0}); //x, y, radius, color
+}
+
+void Graph::setUpAverages() {
+    for (size_t parent = 0; parent < matrix.size(); parent++) {
+        double aver = 0;
+        int total = 0;
+        for (size_t child = 0; child < matrix[parent].size(); child++) {
+            if (matrix[parent][child] != NULL && matrix[parent][child]->rating != 11) {
+                aver += matrix[parent][child]->rating;
+                total++;
+            }
+        }
+        vertices[parent]->average = aver / total;
+    }
+}
+
+int Graph::getChildren(int index) {
+    int result = 0;
+    for (size_t i = 0; i < matrix[index].size(); i++) {
+        if (matrix[index][i] != NULL && matrix[index][i]->rating != 11) {
+            result++;
+        }
+    }
+    return result;
 }
