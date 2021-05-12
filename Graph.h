@@ -79,7 +79,7 @@ class Graph {
         */
         double calculateAverage(Vertex* a);
 
-        void BFS(int startid);
+        std::vector<int> BFS(int startid);
 
         std::vector<int> dijkstrasAlgo(int s);
 
