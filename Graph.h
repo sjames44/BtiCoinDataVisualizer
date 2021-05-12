@@ -23,10 +23,16 @@ class Graph {
 
         struct Edge {
             int rating;
+<<<<<<< HEAD
 
             Edge(int rating): rating(rating) {}
+=======
+            Edge(int rating) : rating(rating) {}
+>>>>>>> 60d3e7667a9b414284364448e33dfff9ab063bb7
         };
+
         std::vector<Vertex*> vertices;
+<<<<<<< HEAD
         std::vector<std::vector<Edge*> > matrix; //First dimension is parent vertex, second is child
 
     public:
@@ -35,6 +41,18 @@ class Graph {
 
         Graph(int size);
 
+=======
+        std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
+        int getIndex(Vertex& a);
+
+        void printSolution(std::vector<int> dist);
+
+
+    public:
+        Graph();
+        
+        Graph(int size);
+>>>>>>> 60d3e7667a9b414284364448e33dfff9ab063bb7
         /**
         * Method that inserts a new vertex (User) into the graph
         * @param id - The id of the new user
@@ -62,15 +80,15 @@ class Graph {
         * @param v - The vertex we want to find the incident edges of 
         * @return a list of edges incident to Vertex v
         */ 
-        std::vector<Edge> incidentEdges(Vertex v);
+        std::vector<Edge> incidentEdges(Vertex* v);
 
         /**
-        * Method that will determine if two edges are connected or not
+        * Method that will determine if two vertices are connected or not
         * @param a - The first vertex
         * @param b - The second vertex
-        * @return true if the two edges are adjacent, false otherwise
+        * @return true if the two vertices are adjacent, false otherwise
         */
-        bool areAdjacent(Vertex a, Vertex b);
+        bool areAdjacent(Vertex* a, Vertex* b);
 
         /**
         * A simple method that will return the edge that connects two vertices
@@ -78,12 +96,22 @@ class Graph {
         * @param b - The second vertex
         * @return a pointer to the edge that connects the two vertices
         */
-        Edge* getEdge(Vertex a, Vertex b);        
+        Edge* getEdge(Vertex* a, Vertex* b);        
 
         /**
         * Method that will calculate the average rating of a specific user
         * @param a - The user we want to calculate the average for
         * @return a double representing the average rating for the user
         */
+<<<<<<< HEAD
         double calculateAverage(Vertex *a);
+=======
+        double calculateAverage(Vertex* a);
+
+        void BFS(int startid);
+
+        std::vector<int> dijkstrasAlgo(int s);
+
+        Vertex* getVertex(int idvert);
+>>>>>>> 60d3e7667a9b414284364448e33dfff9ab063bb7
 };

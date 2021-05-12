@@ -16,3 +16,8 @@ but after some discussion with our advisor we are leaning more towards a directe
 vertex and edge structures. Also began working on our File Reader object, which is what we are going to use to read the data 
 from the dataset into our structure. We will most likely implement the basics of our structure before completing the
 file reader.
+
+**Week of 04/25/2021:**
+This week our primary focus was parsing our dataset and implementing the primary objects and method for our graph. We decided on parsing the CSV file with a fstream object and storing our data into a adjacency matrix. We implemented a struct for both a vertex and an edge with respective private data members and documented helper methods to assist data parsing process. Additionally we had our mdipoint meeting on the project on Friday, we are considering on changing primary struction of a two by two matrix to something that is more efficient as given by the instructor. Our goal for this week is to work on the make file, resolve merge conflict and write test cases for all our method implementations.
+
+Finished work on Graph implementation and File reader. Decided to switch from implementing the PageRank algorithm to implementing Dijkstra's Algorithm due to time/complexity issues. We also began splitting up the work for the traversal and the two chosen algorithms. We have begun taking the advice that our TA gave us during the mid-point check-in and implementing it. 
