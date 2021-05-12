@@ -7,7 +7,7 @@ Graph::Graph(){
 }
 
 Graph::Graph(int size) {
-    vertices.resize(size);
+    //vertices.resize(size);
     for (int row = 0; row < size; row++) {
         std::vector<Edge*> newRow(size, NULL);
         matrix.push_back(newRow);
@@ -17,8 +17,8 @@ Graph::Graph(int size) {
 void Graph::insertVertex(int id) {
     Vertex* newVertex = new Vertex(id);
     newVertex->average = 0; //Default value
-    //vertices.push_back(newVertex);
-    vertices[id -1] = newVertex;
+    vertices.push_back(newVertex);
+    //vertices[id -1] = newVertex;
     
 }
 
@@ -67,24 +67,28 @@ bool Graph::areAdjacent(Vertex* a, Vertex* b){
     else return false;
 }
 
-void Graph::BFS(int startid){
+std::vector<int> Graph::BFS(int startid){
     std::vector<bool> visited(vertices.size(),0);
     std::vector<Vertex*> ids;
+    std::vector<int> traversed;
     ids.push_back(getVertex(startid));
     visited[startid -1] = 1;
     while(!ids.empty()) {
         Vertex* curr = ids[0];
         std::cout << curr->id << std::endl;
+        traversed.push_back(curr->id);
         ids.erase(ids.begin());
         for(size_t i=0; i<vertices.size(); i++){
             if(matrix[curr->id - 1][vertices[i]->id - 1] != NULL){
                 if(matrix[curr->id - 1][vertices[i]->id - 1]->rating != 11 && !visited[i]){
                     ids.push_back(vertices[i]);
+                    
                     visited[i] = 1;
                 }
             }
         }
     }
+    return traversed;
 }
 
 std::vector<int> Graph::dijkstrasAlgo(int s) {
