@@ -8,6 +8,8 @@
 
 #include <vector>
 #include <iostream>
+#include "cs225/PNG.h"
+#include "cs225/HSLAPixel.h"
 
 
 class Graph {
@@ -32,9 +34,17 @@ class Graph {
 
 
     public:
+        /**
+         * CONSTRUCTORS
+         * 
+         * */
+        
         Graph();
         
         Graph(int size);
+
+        Graph(std::ifstream &in);
+
         /**
         * Method that inserts a new vertex (User) into the graph
         * @param id - The id of the new user
@@ -84,4 +94,5 @@ class Graph {
         std::vector<int> dijkstrasAlgo(int s);
 
         Vertex* getVertex(int idvert);
+
 };

@@ -1,5 +1,7 @@
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 #include "../catch/catch.hpp"
 #include "../Graph.h"
@@ -24,9 +26,47 @@ Graph createBasicGraph() {
 }
 
 
+
 TEST_CASE("Basic dijkstra test", "[dijkstra]") {   
     Graph G = createBasicGraph();
     //G.dijkstrasAlgo(0);
     std::vector<int> solution{0, 2, 3, 8, 6, 9};
     REQUIRE(G.dijkstrasAlgo(0) == solution);
 }		
+
+TEST_CASE("Basic BFS test", "[BFS1]"){
+    Graph G = createBasicGraph();
+    std::vector<int> solution{1, 2, 3, 4, 5, 6};
+    REQUIRE(G.BFS(1) == solution);
+}
+
+TEST_CASE("Basic file reader", "[FileRead1]"){
+    std::ifstream file;
+    file.open("tests/test1.txt");
+    Graph graph(file);
+    std::vector<int> solution{1, 25};  //, 430, 3134, 3026, 3010, 804, 160, 95, 377, 888};
+    std::vector<int> result = graph.BFS(1);
+    REQUIRE(result == solution);
+}
+
+TEST_CASE("Basic file reader2", "[FileRead1]"){
+    std::ifstream file;
+    file.open("tests/test2.txt");
+    Graph graph(file);
+    std::vector<int> solution{1, 7188, 430, 3134, 3026, 3010, 804, 160, 95, 377, 888};
+    std::vector<int> result = graph.BFS(1);
+    REQUIRE(result == solution);
+}
+
+TEST_CASE("Extreme file reader", "[FileRead1]"){
+    std::ifstream file;
+    file.open("tests/realtest.txt");
+    Graph graph(file);
+    std::vector<int> result = graph.BFS(1);
+    std::ofstream output;
+    output.open("tests/realtestout.txt");
+    for(size_t i=0; i<result.size(); i++){
+        output << result[i] << std::endl;
+    }
+}
+    

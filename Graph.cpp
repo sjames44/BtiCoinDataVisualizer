@@ -1,3 +1,5 @@
+#include <fstream>
+#include <iostream>
 #include "Graph.h"
 #include <vector>
 #include <queue>
@@ -14,7 +16,42 @@ Graph::Graph(int size) {
     }
 }
 
+Graph::Graph(std::ifstream &in) {
+    for (int row = 0; row < 7604; row++) {
+        std::vector<Edge*> newRow(7604, NULL);
+        matrix.push_back(newRow);
+    }
+
+    std::string output;
+    while(!in.eof()) {
+        int rater, ratee, rating; 
+
+        getline(in, output, ',');
+        rater = stoi(output);
+
+        getline(in, output, ',');
+        ratee = stoi(output);
+
+        getline(in, output, ',');
+        rating = stoi(output);
+        rating += 11;
+        rating = 22 - rating;
+
+        getline(in, output, '\n');
+
+        insertVertex(ratee);
+        insertVertex(rater);
+        insertEdge(ratee, rater, rating);
+    }
+}
+
 void Graph::insertVertex(int id) {
+    
+    for (size_t index = 0; index < vertices.size(); index++) {
+        if(vertices[index]->id == id)
+            return;
+    }
+
     Vertex* newVertex = new Vertex(id);
     newVertex->average = 0; //Default value
     vertices.push_back(newVertex);
@@ -75,10 +112,11 @@ std::vector<int> Graph::BFS(int startid){
     visited[startid -1] = 1;
     while(!ids.empty()) {
         Vertex* curr = ids[0];
-        std::cout << curr->id << std::endl;
+        //std::cout << curr->id << std::endl;
         traversed.push_back(curr->id);
         ids.erase(ids.begin());
         for(size_t i=0; i<vertices.size(); i++){
+            //std::cout << vertices[i]->id << std::endl;
             if(matrix[curr->id - 1][vertices[i]->id - 1] != NULL){
                 if(matrix[curr->id - 1][vertices[i]->id - 1]->rating != 11 && !visited[i]){
                     ids.push_back(vertices[i]);
