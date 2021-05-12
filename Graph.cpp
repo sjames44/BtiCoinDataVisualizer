@@ -13,15 +13,15 @@ Graph::Graph(){
 Graph::Graph(int size) {
     //vertices.resize(size);
     for (int row = 0; row < size; row++) {
-        std::vector<Edge*> newRow(size, NULL);
+        std::vector<int> newRow(size, 11);
         matrix.push_back(newRow);
         numChildren.push_back(0);
     }
 }
 
-Graph::Graph(std::ifstream &in) {
-    for (int row = 0; row < 7604; row++) {
-        std::vector<Edge*> newRow(7604, NULL);
+Graph::Graph(std::ifstream &in, int size) {
+    for (int row = 0; row < size; row++) {
+        std::vector<int> newRow(size, 11);
         matrix.push_back(newRow);
     }
 
@@ -66,43 +66,41 @@ void Graph::insertEdge(Vertex first, Vertex second, int weight) {
     int firstId = first.id - 1; //Indexes are offset by 1
     int secondId = second.id - 1;
 
-    Edge* newEdge = new Edge(weight); 
-
-    matrix[firstId][secondId] = newEdge;
+    matrix[firstId][secondId] = weight;
 }
 
 double Graph::calculateAverage(Vertex* a) {
     int sum = 0;
     int total = 0;
 
-    std::vector<Edge> incidents = incidentEdges(a);
+    std::vector<int> incidents = incidentEdges(a);
 
-    for (Edge edge : incidents) {
+    for (int edge : incidents) {
         total++;
-        sum += edge.rating;
+        sum += edge;
     }
 
     return (sum / total);
 }
 
-std::vector<Graph::Edge> Graph::incidentEdges(Vertex* a) {
-    std::vector<Edge> result;
+std::vector<int> Graph::incidentEdges(Vertex* a) {
+    std::vector<int> result;
     for(size_t i=0; i<vertices.size(); i++){
-        Edge temp = *matrix[a->id -1][vertices[i]->id -1];
-        if(temp.rating != 11)
+        int temp = matrix[a->id -1][vertices[i]->id -1];
+        if(temp != 11)
             result.push_back(temp);
     }
     return result;
 }
 
 
-Graph::Edge* Graph::getEdge(Vertex* a, Vertex* b){
+int Graph::getEdge(Vertex* a, Vertex* b){
     //Edge* temp = matrix[a->id][b->id];
     return matrix[a->id -1][b->id -1];
 }
 
 bool Graph::areAdjacent(Vertex* a, Vertex* b){
-    if(matrix[a->id -1][b->id -1]->rating != 0)
+    if(matrix[a->id -1][b->id -1] != 0)
         return true;
     else return false;
 }
@@ -119,13 +117,9 @@ std::vector<int> Graph::BFS(int startid){
         traversed.push_back(curr->id);
         ids.erase(ids.begin());
         for(size_t i=0; i<vertices.size(); i++){
-            //std::cout << vertices[i]->id << std::endl;
-            if(matrix[curr->id - 1][vertices[i]->id - 1] != NULL){
-                if(matrix[curr->id - 1][vertices[i]->id - 1]->rating != 11 && !visited[i]){
-                    ids.push_back(vertices[i]);
-                    
-                    visited[i] = 1;
-                }
+            if(matrix[curr->id - 1][vertices[i]->id - 1] != 11 && !visited[i]){
+                ids.push_back(vertices[i]);
+                visited[i] = 1;
             }
         }
     }
@@ -156,9 +150,9 @@ std::vector<int> Graph::dijkstrasAlgo(int s) {
         
         //Iterate through all the edges vertices adjacent to u and find the best one
         for (size_t v = 0; v < matrix[u].size(); v++) {
-            if (!visited[v] && matrix[u][v] != NULL && matrix[u][v]->rating != 11 && distances[u] != INT_MAX) { //Check if its a vertex we want to check
-                if (distances[u] + matrix[u][v]->rating < distances[v]) { //If we've found a better distance, update
-                    distances[v] = distances[u] + matrix[u][v]->rating;
+            if (!visited[v] && matrix[u][v] != 11 && distances[u] != INT_MAX) { //Check if its a vertex we want to check
+                if (distances[u] + matrix[u][v] < distances[v]) { //If we've found a better distance, update
+                    distances[v] = distances[u] + matrix[u][v];
                     q.push(std::make_pair(distances[v], v));
                 }
             }

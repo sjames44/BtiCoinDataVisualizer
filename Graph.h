@@ -21,15 +21,14 @@ class Graph {
             Vertex(int id) : id(id) {}
         };
 
-        struct Edge {
-            int rating;
-            Edge(int rating) : rating(rating) {}
-        };
-
         std::vector<Vertex*> vertices;
+<<<<<<< HEAD
         std::vector<std::vector<Edge*>> matrix; //First dimension is parent vertex, second is child
         std::vector<int> numChildren;
         std::vector<std::vector<double>> coords; //x, y, radius, color
+=======
+        std::vector<std::vector<int>> matrix; //First dimension is parent vertex, second is child
+>>>>>>> 03d422d5836877cb3b1fb01fe448647257ffdaf1
         int getIndex(Vertex& a);
 
         void printSolution(std::vector<int> dist);
@@ -51,7 +50,7 @@ class Graph {
         
         Graph(int size);
 
-        Graph(std::ifstream &in);
+        Graph(std::ifstream &in, int size);
 
         /**
         * Method that inserts a new vertex (User) into the graph
@@ -72,7 +71,7 @@ class Graph {
         * @param v - The vertex we want to find the incident edges of 
         * @return a list of edges incident to Vertex v
         */ 
-        std::vector<Edge> incidentEdges(Vertex* v);
+        std::vector<int> incidentEdges(Vertex* v);
 
         /**
         * Method that will determine if two vertices are connected or not
@@ -88,7 +87,7 @@ class Graph {
         * @param b - The second vertex
         * @return a pointer to the edge that connects the two vertices
         */
-        Edge* getEdge(Vertex* a, Vertex* b);        
+        int getEdge(Vertex* a, Vertex* b);        
 
         /**
         * Method that will calculate the average rating of a specific user
