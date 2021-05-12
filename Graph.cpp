@@ -110,7 +110,6 @@ std::vector<int> Graph::BFS(int startid){
     visited[startid -1] = 1;
     while(!ids.empty()) {
         Vertex* curr = ids[0];
-        //std::cout << curr->id << std::endl;
         traversed.push_back(curr->id);
         ids.erase(ids.begin());
         for(size_t i=0; i<vertices.size(); i++){
@@ -208,7 +207,7 @@ cs225::PNG* Graph::drawGraph() {
         coords[i][3] = color; //Set the color of this vertex
 
         //Set radius
-        double radius = (getChildren(i) + 1) * 50;
+        double radius = (getChildren(i) + 1) * 2;
         //Bounds detection
         if (coords[i][0] - radius < 0) {
             coords[i][0] += (coords[i][0] - radius);

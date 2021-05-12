@@ -1,12 +1,24 @@
+
 #include <iostream>
+#include <fstream>
 #include "Graph.h"
 #include "cs225/PNG.h"
 
 /*int main (int argc, const char * argv[]) {
-    std::cout << "Hello World";
+    std::cout << "Hello World" << std::endl;
 }*/
 
 int main(){
+    std::ifstream file;
+    file.open("tests/realtest.txt");
+    std::cout << "Reading data set..." << std::endl;
+    Graph graph(file, 7604);
+    std::cout << "Drawing visualization..." << std::endl;
+    cs225::PNG* g = graph.drawGraph();
+    std::cout << "Saving visualization to 'out.png'" << std::endl;
+    g->writeToFile("out.png");
+    
+   /*
     Graph G(15);
     G.insertVertex(1);
     G.insertVertex(9);
@@ -21,24 +33,6 @@ int main(){
     G.insertEdge(9,5,2);
     cs225::PNG* g = G.drawGraph();
     g->writeToFile("out.png");
-    // G.insertVertex(1);
-    // G.insertVertex(2);
-    // G.insertVertex(3);
-    // G.insertVertex(4);
-    // G.insertVertex(5);
-    // G.insertVertex(6);
+    */
 
-    // G.insertEdge(1, 2, 2);
-    // G.insertEdge(1, 3, 4);
-    // G.insertEdge(2, 3, 1);
-    // G.insertEdge(2, 4, 7);
-    // G.insertEdge(3, 5, 3);
-    // G.insertEdge(5, 4, 2);
-    // G.insertEdge(4, 6, 1);
-    // G.insertEdge(5, 6, 5);
-
-    // cs225::PNG* g = G.drawGraph();
-    // g->writeToFile("out.png");
-
-    //G.dijkstrasAlgo(0);
 }
