@@ -43,8 +43,8 @@ TEST_CASE("Basic BFS test", "[BFS1]"){
 TEST_CASE("Basic file reader", "[FileRead1]"){
     std::ifstream file;
     file.open("tests/test1.txt");
-    Graph graph(file);
-    std::vector<int> solution{1, 25};  //, 430, 3134, 3026, 3010, 804, 160, 95, 377, 888};
+    Graph graph(file,30);
+    std::vector<int> solution{1, 25}; 
     std::vector<int> result = graph.BFS(1);
     REQUIRE(result == solution);
 }
@@ -52,7 +52,7 @@ TEST_CASE("Basic file reader", "[FileRead1]"){
 TEST_CASE("Basic file reader2", "[FileRead1]"){
     std::ifstream file;
     file.open("tests/test2.txt");
-    Graph graph(file);
+    Graph graph(file, 7604);
     std::vector<int> solution{1, 7188, 430, 3134, 3026, 3010, 804, 160, 95, 377, 888};
     std::vector<int> result = graph.BFS(1);
     REQUIRE(result == solution);
@@ -61,7 +61,7 @@ TEST_CASE("Basic file reader2", "[FileRead1]"){
 TEST_CASE("Extreme file reader", "[FileRead1]"){
     std::ifstream file;
     file.open("tests/realtest.txt");
-    Graph graph(file);
+    Graph graph(file, 7604);
     std::vector<int> result = graph.BFS(1);
     std::ofstream output;
     output.open("tests/realtestout.txt");
