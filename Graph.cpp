@@ -6,10 +6,6 @@
 #include <stdlib.h> //Used for rand
 #include <time.h>
 
-Graph::Graph(){
-
-}
-
 Graph::Graph(int size) {
     idSize = size;
     for (int row = 0; row < size; row++) {
@@ -20,6 +16,7 @@ Graph::Graph(int size) {
 }
 
 Graph::Graph(std::ifstream &in, int size) {
+    idSize = size;
     for (int row = 0; row < size; row++) {
         std::vector<int> newRow(size, 11);
         matrix.push_back(newRow);
@@ -68,8 +65,8 @@ void Graph::insertEdge(Vertex first, Vertex second, int weight) {
 }
 
 double Graph::calculateAverage(Vertex* a) {
-    int sum = 0;
-    int total = 0;
+    double sum = 0;
+    double total = 0;
 
     std::vector<int> incidents = incidentEdges(a);
 
@@ -89,17 +86,6 @@ std::vector<int> Graph::incidentEdges(Vertex* a) {
             result.push_back(temp);
     }
     return result;
-}
-
-
-int Graph::getEdge(Vertex* a, Vertex* b){
-    return matrix[a->id -1][b->id -1];
-}
-
-bool Graph::areAdjacent(Vertex* a, Vertex* b){
-    if(matrix[a->id -1][b->id -1] != 0)
-        return true;
-    else return false;
 }
 
 std::vector<int> Graph::BFS(int startid){
@@ -123,12 +109,17 @@ std::vector<int> Graph::BFS(int startid){
 }
 
 std::vector<int> Graph::dijkstrasAlgo(int s) {
-    std::cout << vertices[s]->id << std::endl;
     std::vector<int> distances;
     std::vector<bool> visited;
     distances.resize(idSize, INT_MAX); //Vector that stores distances for each vertex
     visited.resize(idSize, false);
+
+    if (s < 0 || s > idSize - 1) {
+        return distances;
+    }
     
+    //Implementing min heap priority queue to make it like lecture
+    //https://www.studytonight.com/cpp-programs/cpp-implementing-min-heap-using-priority-queue-program
     std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>> > q; //Priority queue that is min-heap <weight, index>
 
     //Add start to q and add dist
@@ -155,18 +146,7 @@ std::vector<int> Graph::dijkstrasAlgo(int s) {
         }
     }
 
-    printSolution(distances);
     return distances;
-}
-
-int Graph::getIndex(Vertex& v) {
-    for (size_t index = 0; index < vertices.size(); index++) {
-        if (vertices[index]->id == v.id) {
-            return index;
-        }
-    }
-    //If vertex wasn't found in vector
-    return -1;
 }
 
 Graph::Vertex* Graph::getVertex(int idvert) {
@@ -179,15 +159,6 @@ Graph::Vertex* Graph::getVertex(int idvert) {
     return NULL;
 }
 
-void Graph::printSolution(std::vector<int> dist)
-{
-    std::cout << dist.size() << std::endl;
-    for (size_t i = 0; i < dist.size(); i++) {
-        std::cout << dist[i] << " ";
-    }
-    std::cout << std::endl;
-}
-
 cs225::PNG* Graph::drawGraph() {
     int width = 5000;
     int height = 5000;
@@ -198,16 +169,17 @@ cs225::PNG* Graph::drawGraph() {
     for (size_t i = 0; i < coords.size(); i++) {
         
         //Set color
-        double color = 360;
-        if (vertices[i]->average < 11) { //Good rating, color green
-            color = 130;
-        } else if (vertices[i]->average >= 11) { //Bad rating, color red
-            color = 0;
+        double color = 130;
+        if (vertices[i]->average == 0)
+            color = 240;
+        else{
+            color = (1 - (vertices[i]->average / 21)) * color;
         }
+
         coords[i][3] = color; //Set the color of this vertex
 
         //Set radius
-        double radius = (getChildren(i) + 1) * 2;
+        double radius = (getChildren(i) + 1);
         //Bounds detection
         if (coords[i][0] - radius < 0) {
             coords[i][0] += (coords[i][0] - radius);
@@ -264,8 +236,10 @@ void Graph::setUpAverages() {
                 total++;
             }
         }
-
-        vertices[vertex]->average = (aver/total);
+        if(total == 0)
+            vertices[vertex]->average = 0;
+        else
+            vertices[vertex]->average = (aver/total);
     }
 }
 
