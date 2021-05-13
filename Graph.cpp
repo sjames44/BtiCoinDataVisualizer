@@ -93,6 +93,8 @@ std::vector<int> Graph::BFS(int startid){
     std::vector<Vertex*> ids;
     std::vector<int> traversed;
     ids.push_back(getVertex(startid));
+    if(getVertex(startid) == NULL)
+        return traversed;
     visited[startid -1] = 1;
     while(!ids.empty()) {
         Vertex* curr = ids[0];
@@ -109,18 +111,16 @@ std::vector<int> Graph::BFS(int startid){
 }
 
 std::vector<int> Graph::dijkstrasAlgo(int s) {
+
     std::vector<int> distances;
     std::vector<bool> visited;
-    distances.resize(idSize, INT_MAX); //Vector that stores distances for each vertex
-    visited.resize(idSize, false);
-
+    //Out of bounds detection
     if (s < 0 || s > idSize - 1) {
         return distances;
     }
     
-    if (s < 0 || s > idSize - 1) {
-        return distances;
-    }
+    distances.resize(idSize, INT_MAX); //Vector that stores distances for each vertex
+    visited.resize(idSize, false);
     
     //Implementing min heap priority queue to make it like lecture
     //https://www.studytonight.com/cpp-programs/cpp-implementing-min-heap-using-priority-queue-program
@@ -198,7 +198,7 @@ cs225::PNG* Graph::drawGraph() {
     }
 
 
-    //Go through and draw the 
+    //Go through and draw the image
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x ++) {
             for (size_t i = 0; i < coords.size(); i++) {
@@ -257,4 +257,8 @@ int Graph::getChildren(int index) {
         }
     }
     return result;
+}
+
+std::vector<std::vector<int>> Graph::getMatrix() {
+    return matrix;
 }
