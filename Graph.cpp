@@ -118,6 +118,10 @@ std::vector<int> Graph::dijkstrasAlgo(int s) {
         return distances;
     }
     
+    if (s < 0 || s > idSize - 1) {
+        return distances;
+    }
+    
     //Implementing min heap priority queue to make it like lecture
     //https://www.studytonight.com/cpp-programs/cpp-implementing-min-heap-using-priority-queue-program
     std::priority_queue< std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>> > q; //Priority queue that is min-heap <weight, index>
