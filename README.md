@@ -8,7 +8,9 @@
  - [Link to dataset](http://snap.stanford.edu/data/soc-sign-bitcoin-otc.html)
  
  ### Sample Visualization:
- 
+ ![Sample Output](output.png)
+  - Vertices are colored on a scale from red to green, representing bad to good average ratings respectively
+  - Vertex size corresponds to the number of ratings that user has received 
 
 
 
